@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Embedded;
+import jakarta.persistence.Column;
 
 import io.micrometer.common.lang.NonNull;
 import jakarta.validation.constraints.Email;
@@ -44,16 +45,20 @@ public class User {
     private String email;
 
     @NonNull
-    @Pattern(regexp = "^\\(?[1-9]{2}\\)? ?(?:[2-8]|9[0-9])[0-9]{3}\\-?[0-9]{4}$")
+    @Pattern(regexp = "^\\(?[1-9]{2}\\)? ?(?:[2-8]|9[0-9])[0-9]{3}\\-?[0-9]{4}$", message = "O telefone Deve estar indentado de maneira correta.")
     private String telefone;
 
     @NonNull
-    @Pattern(regexp = "\\d{3}\\.?\\d{3}\\.?\\d{3}\\-?\\d{2}")
+    @Pattern(regexp = "\\d{3}\\.?\\d{3}\\.?\\d{3}\\-?\\d{2}", message = "O cpf deve ter 11 números")
     private String cpf;
 
     @NonNull
     @Embedded
     private Endereco endereco;
+
+    @NonNull
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{8,32}$", message = "A senha deve conter entre 8 e 32 caracteres, com pelo menos uma letra maiúscula, uma letra minúscula e um número.")
+    private String senha;
 
     public void addUser(User user) {
         if (users == null) {
@@ -81,6 +86,10 @@ public class User {
         if (this.idUser == null) {
             this.idUser = UUID.randomUUID();
         }
+    }
+
+    public boolean verificarSenha(String senha) {
+        return this.senha.equals(senha);
     }
 
 }

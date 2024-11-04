@@ -29,6 +29,23 @@ public class UserService {
     @NonNull
     @Lock(PESSIMISTIC_READ)
     public UUID handle(@NonNull CadastrarUser cmd) {
+        try {
+            Optional<User> userExistente = repository.findByEmail(cmd.getEmail());
+            if (userExistente.isPresent()) {
+                throw new IllegalArgumentException(
+                        format("Já existe um usuário cadastrado com o email: %s", cmd.getEmail()));
+            }
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Erro ao verificar email: " + e.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException("Erro inesperado ao verificar email: " + e.getMessage());
+        }
+
+        if (repository.findByCpf(cmd.getCpf()).isPresent()) {
+            throw new IllegalArgumentException(
+                    format("Já existe um usuário cadastrado com o CPF: %s", cmd.getCpf()));
+        }
+
         User user = User.builder()
                 .nome(cmd.getNome())
                 .dataDeNascimento(cmd.getDataDeNascimento())
@@ -69,5 +86,17 @@ public class UserService {
 
     public void deletar(@NonNull UUID idUser) {
         repository.deleteById(idUser);
+    }
+
+    public User autenticar(String email, String senha) {
+        User user = repository.findByEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        format("Usuário não encontrado com o email: %s", email)));
+
+        if (!user.verificarSenha(senha)) {
+            throw new IllegalArgumentException("Senha incorreta");
+        }
+
+        return user;
     }
 }

@@ -15,4 +15,5 @@ public class CadastrarUser {
     private String telefone;
     private String cpf;
     private Endereco endereco;
+    private String senha;
 }
