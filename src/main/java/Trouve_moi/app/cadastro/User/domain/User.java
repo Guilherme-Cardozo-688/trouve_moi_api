@@ -5,10 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.Embedded;
 
 import io.micrometer.common.lang.NonNull;
 import jakarta.validation.constraints.Email;
@@ -16,11 +18,14 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 @Entity
+@Table(name = "users")
 @NoArgsConstructor
 @Getter
 @Builder
+@AllArgsConstructor
 public class User {
     @Id
     private UUID idUser;
@@ -50,16 +55,6 @@ public class User {
     @Embedded
     private Endereco endereco;
 
-    public User(UserBuilder builder) {
-        this.users = null;
-        this.nome = builder.nome;
-        this.dataDeNascimento = builder.dataDeNascimento;
-        this.email = builder.email;
-        this.telefone = builder.telefone;
-        this.cpf = builder.cpf;
-        this.endereco = builder.endereco;
-    }
-
     public void addUser(User user) {
         if (users == null) {
             users = new ArrayList<>();
@@ -81,13 +76,10 @@ public class User {
         });
     }
 
-    public static class UserBuilder {
-        private UUID idUser;
-
-        public User build() {
-            idUser = UUID.randomUUID();
-
-            return new User(this);
+    @PrePersist
+    public void prePersist() {
+        if (this.idUser == null) {
+            this.idUser = UUID.randomUUID();
         }
     }
 

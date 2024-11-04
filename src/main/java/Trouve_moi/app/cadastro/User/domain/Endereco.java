@@ -1,6 +1,6 @@
 package Trouve_moi.app.cadastro.User.domain;
 
-import javax.persistence.Embeddable;
+import jakarta.persistence.Embeddable;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
