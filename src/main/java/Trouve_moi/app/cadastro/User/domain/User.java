@@ -11,7 +11,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Embedded;
-import jakarta.persistence.Column;
 
 import io.micrometer.common.lang.NonNull;
 import jakarta.validation.constraints.Email;
