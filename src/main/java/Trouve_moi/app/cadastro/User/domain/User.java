@@ -31,8 +31,9 @@ public class User {
     @Id
     private UUID idUser;
 
+    @Builder.Default
     @ManyToMany
-    private List<User> users;
+    private List<User> users = new ArrayList<>();
 
     @NonNull
     private String nome;
@@ -57,7 +58,6 @@ public class User {
     private Endereco endereco;
 
     @NonNull
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{8,32}$", message = "A senha deve conter entre 8 e 32 caracteres, com pelo menos uma letra maiúscula, uma letra minúscula e um número.")
     private String senha;
 
     public void addUser(User user) {

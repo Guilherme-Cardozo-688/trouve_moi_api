@@ -48,6 +48,12 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(salvar);
     }
 
+    @PutMapping("addUser/{idUser}/{userId}")
+    public ResponseEntity<User> alterar(@PathVariable @NonNull UUID idUser, @PathVariable @NonNull UUID userId) {
+        User salvar = service.addUser(idUser, userId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(salvar);
+    }
+
     @GetMapping
     public ResponseEntity<List<User>> listarTodos() {
         List<User> users = service.listarTodos();

@@ -53,6 +53,7 @@ public class UserService {
                 .telefone(cmd.getTelefone())
                 .cpf(cmd.getCpf())
                 .endereco(cmd.getEndereco())
+                .senha(cmd.getSenha())
                 .build();
         repository.save(user);
         return user.getIdUser();
@@ -98,5 +99,21 @@ public class UserService {
         }
 
         return user;
+    }
+
+    public User addUser(UUID idUser, UUID userId) {
+        User user = repository.findById(idUser)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        String.format("Usuário não encontrado com o Id: %s", idUser.toString())));
+        User userToAdd = repository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        String.format("Usuário não encontrado com o Id: %s", userId.toString())));
+
+        if (user.getUsers().contains(userToAdd)) {
+            throw new IllegalArgumentException("Usuário já está na lista");
+        }
+
+        user.addUser(userToAdd);
+        return repository.save(user);
     }
 }
