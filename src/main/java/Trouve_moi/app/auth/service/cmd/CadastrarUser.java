@@ -1,7 +1,6 @@
-package Trouve_moi.app.cadastro.User.domain.cmd;
+package Trouve_moi.app.auth.service.cmd;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 import Trouve_moi.app.cadastro.User.domain.Endereco;
 import lombok.Builder;
@@ -9,12 +8,12 @@ import lombok.Data;
 
 @Data
 @Builder
-public class AtualizarUser {
-    private UUID idUser;
+public class CadastrarUser {
     private String nome;
     private LocalDate dataDeNascimento;
     private String email;
     private String telefone;
     private String cpf;
     private Endereco endereco;
+    private String senha;
 }

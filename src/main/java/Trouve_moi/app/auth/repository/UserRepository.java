@@ -1,6 +1,6 @@
-package Trouve_moi.app.cadastro.User.repository;
+package Trouve_moi.app.auth.repository;
 
-import Trouve_moi.app.cadastro.User.domain.User;
+import Trouve_moi.app.auth.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

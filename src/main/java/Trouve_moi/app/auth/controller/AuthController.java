@@ -1,5 +1,7 @@
 package Trouve_moi.app.cadastro.User.controller;
 
+import Trouve_moi.app.auth.domain.User;
+import Trouve_moi.app.auth.service.UserService;
 import Trouve_moi.app.cadastro.User.domain.User;
 import Trouve_moi.app.cadastro.User.infra.dto.AuthRequest;
 import Trouve_moi.app.cadastro.User.infra.dto.AuthResponse;

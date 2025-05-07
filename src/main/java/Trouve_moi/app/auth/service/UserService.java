@@ -1,4 +1,4 @@
-package Trouve_moi.app.cadastro.User.service;
+package Trouve_moi.app.auth.service;
 
 import static java.lang.String.format;
 import java.util.List;
@@ -6,15 +6,18 @@ import static java.util.Objects.requireNonNull;
 import java.util.Optional;
 import java.util.UUID;
 
+import Trouve_moi.app.auth.domain.User;
+import Trouve_moi.app.auth.repository.UserRepository;
+import Trouve_moi.app.auth.service.cmd.AtualizarUser;
+import Trouve_moi.app.auth.service.cmd.CadastrarUser;
+import Trouve_moi.app.value_objects.Cpf;
+import Trouve_moi.app.value_objects.Email;
+import Trouve_moi.app.value_objects.Telefone;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
 import static org.springframework.transaction.annotation.Propagation.REQUIRES_NEW;
 import org.springframework.transaction.annotation.Transactional;
 
-import Trouve_moi.app.cadastro.User.domain.User;
-import Trouve_moi.app.cadastro.User.domain.cmd.AtualizarUser;
-import Trouve_moi.app.cadastro.User.domain.cmd.CadastrarUser;
-import Trouve_moi.app.cadastro.User.repository.UserRepository;
 import io.micrometer.common.lang.NonNull;
 import jakarta.persistence.EntityNotFoundException;
 import static jakarta.persistence.LockModeType.PESSIMISTIC_READ;
@@ -28,7 +31,7 @@ public class UserService {
 
     @NonNull
     @Lock(PESSIMISTIC_READ)
-    public UUID handle(@NonNull CadastrarUser cmd) {
+    public UUID handle(@NonNull CadastrarUser cmd) throws Exception {
         try {
             Optional<User> userExistente = repository.findByEmail(cmd.getEmail());
             if (userExistente.isPresent()) {
@@ -49,9 +52,9 @@ public class UserService {
         User user = User.builder()
                 .nome(cmd.getNome())
                 .dataDeNascimento(cmd.getDataDeNascimento())
-                .email(cmd.getEmail())
-                .telefone(cmd.getTelefone())
-                .cpf(cmd.getCpf())
+                .email(Email.of(cmd.getEmail()))
+                .telefone(Telefone.of(cmd.getTelefone()))
+                .cpf(Cpf.of(cmd.getCpf()))
                 .endereco(cmd.getEndereco())
                 .senha(cmd.getSenha())
                 .build();
@@ -59,7 +62,7 @@ public class UserService {
         return user.getIdUser();
     }
 
-    public User handle(@NonNull AtualizarUser cmd) {
+    public User handle(@NonNull AtualizarUser cmd) throws Exception {
         User user = repository.findById(requireNonNull(cmd.getIdUser()))
                 .orElseThrow(
                         () -> new EntityNotFoundException(
@@ -69,9 +72,9 @@ public class UserService {
         user.atualizar()
                 .nome(cmd.getNome())
                 .dataDeNascimento(cmd.getDataDeNascimento())
-                .email(cmd.getEmail())
-                .telefone(cmd.getTelefone())
-                .cpf(cmd.getCpf())
+                .email(Email.of(cmd.getEmail()))
+                .telefone(Telefone.of(cmd.getTelefone()))
+                .cpf(Cpf.of(cmd.getCpf()))
                 .endereco(cmd.getEndereco())
                 .aplicar();
         return repository.save(user);

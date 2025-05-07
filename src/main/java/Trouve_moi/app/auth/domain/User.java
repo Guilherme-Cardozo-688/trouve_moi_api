@@ -1,4 +1,4 @@
-package Trouve_moi.app.cadastro.User.domain;
+package Trouve_moi.app.auth.domain;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -6,6 +6,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+import Trouve_moi.app.auth.domain.UserForm;
+import Trouve_moi.app.value_objects.Cpf;
+import Trouve_moi.app.value_objects.Telefone;
+import Trouve_moi.app.value_objects.Email;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
@@ -14,8 +18,7 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.Embedded;
 
 import io.micrometer.common.lang.NonNull;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Pattern;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -45,20 +48,17 @@ public class User implements UserDetails {
     private LocalDate dataDeNascimento;
 
     @NonNull
-    @Email
-    private String email;
+    private Email email;
 
     @NonNull
-    @Pattern(regexp = "^\\(?[1-9]{2}\\)? ?(?:[2-8]|9[0-9])[0-9]{3}\\-?[0-9]{4}$", message = "O telefone Deve estar indentado de maneira correta.")
-    private String telefone;
+    private Telefone telefone;
 
     @NonNull
-    @Pattern(regexp = "\\d{3}\\.?\\d{3}\\.?\\d{3}\\-?\\d{2}", message = "O cpf deve ter 11 números")
-    private String cpf;
+    private Cpf cpf;
 
     @NonNull
     @Embedded
-    private Endereco endereco;
+    private Trouve_moi.app.cadastro.User.domain.Endereco endereco;
 
     @NonNull
     private String senha;
@@ -107,7 +107,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return getUsername();
     }
 
     @Override

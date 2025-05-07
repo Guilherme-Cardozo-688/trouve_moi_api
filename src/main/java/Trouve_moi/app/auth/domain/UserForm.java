@@ -1,8 +1,12 @@
-package Trouve_moi.app.cadastro.User.domain;
+package Trouve_moi.app.auth.domain;
 
 import java.time.LocalDate;
 import java.util.function.Consumer;
 
+import Trouve_moi.app.cadastro.User.domain.Endereco;
+import Trouve_moi.app.value_objects.Cpf;
+import Trouve_moi.app.value_objects.Email;
+import Trouve_moi.app.value_objects.Telefone;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -13,10 +17,10 @@ public class UserForm {
     private User users;
     private String nome;
     private LocalDate dataDeNascimento;
-    private String email;
-    private String telefone;
-    private String cpf;
-    private Endereco endereco;
+    private Email email;
+    private Telefone telefone;
+    private Cpf cpf;
+    private Trouve_moi.app.cadastro.User.domain.Endereco endereco;
 
     public UserForm users(User user) {
         this.users.addUser(user);
@@ -33,17 +37,17 @@ public class UserForm {
         return this;
     }
 
-    public UserForm email(String email) {
+    public UserForm email(Email email) throws Exception{
         this.email = email;
         return this;
     }
 
-    public UserForm telefone(String telefone) {
+    public UserForm telefone(Telefone telefone) throws Exception{
         this.telefone = telefone;
         return this;
     }
 
-    public UserForm cpf(String cpf) {
+    public UserForm cpf(Cpf cpf) throws Exception{
         this.cpf = cpf;
         return this;
     }

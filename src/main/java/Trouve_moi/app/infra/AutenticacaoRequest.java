@@ -1,4 +1,4 @@
-package Trouve_moi.app.cadastro.User.infra;
+package Trouve_moi.app.infra;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package Trouve_moi.app.cadastro.User.infra.security;
+package Trouve_moi.app.infra.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
